@@ -42,18 +42,19 @@ form.addEventListener('submit', async event => {
 });
 
 loadMoreBtn.addEventListener('click', async () => {
-  currentPage += 1;
-  await fetchAndDisplayImages();
+  const nextPage = currentPage + 1;
+  hideLoadMoreButton();
+  await fetchAndDisplayImages(nextPage);
 });
 
-async function fetchAndDisplayImages() {
+async function fetchAndDisplayImages(page = currentPage) {
   try {
     showLoader();
 
-    const data = await getImagesByQuery(currentQuery, currentPage);
+    const data = await getImagesByQuery(currentQuery, page);
 
     if (!data.hits.length) {
-      if (currentPage === 1) {
+      if (page === 1) {
         iziToast.warning({
           title: 'No results',
           message: `No images found for "${currentQuery}".`,
@@ -67,7 +68,7 @@ async function fetchAndDisplayImages() {
 
     totalHits = data.totalHits;
 
-    if (currentPage === 1) {
+    if (page === 1) {
       createGallery(data.hits);
       iziToast.success({
         title: 'Success',
@@ -79,8 +80,10 @@ async function fetchAndDisplayImages() {
       smoothScroll();
     }
 
+    currentPage = page;
+
     const totalPages = Math.ceil(totalHits / 15);
-    if (currentPage < totalPages) {
+    if (page < totalPages) {
       showLoadMoreButton();
     } else {
       hideLoadMoreButton();
@@ -94,7 +97,11 @@ async function fetchAndDisplayImages() {
     hideLoader();
   } catch (error) {
     hideLoader();
-    hideLoadMoreButton();
+    if (galleryContainer.children.length > 0) {
+      showLoadMoreButton();
+    } else {
+      hideLoadMoreButton();
+    }
     iziToast.error({
       title: 'Error',
       message: 'Something went wrong. Please try again.',

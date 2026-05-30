@@ -5,26 +5,6 @@ const galleryContainer = document.querySelector('.gallery');
 const loaderEl = document.getElementById('loader');
 const loadMoreBtn = document.getElementById('load-more-btn');
 
-if (SimpleLightbox && SimpleLightbox.prototype && !SimpleLightbox.prototype._patchedRefresh) {
-  const originalRefresh = SimpleLightbox.prototype.refresh;
-
-  SimpleLightbox.prototype.refresh = function () {
-    if (!this.initialSelector) {
-      throw 'refreshing only works when you initialize using a selector!';
-    }
-
-    const options = this.options;
-    const selector = this.initialSelector;
-
-    this.destroy();
-    const refreshed = new this.constructor(selector, options);
-    refreshed._patchedRefresh = true;
-    return refreshed;
-  };
-
-  SimpleLightbox.prototype._patchedRefresh = true;
-}
-
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
@@ -70,7 +50,7 @@ export function createGallery(images) {
     .join('');
 
   galleryContainer.insertAdjacentHTML('beforeend', markup);
-  lightbox = lightbox.refresh();
+  lightbox.refresh();
 }
 
 export function clearGallery() {
