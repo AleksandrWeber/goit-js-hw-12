@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
-    <link rel="stylesheet" href="./css/styles.css" />
-  </head>
-  <body>
-    <load src="./partials/header.html" icon-path="img/sprite.svg#logo" />
 
-    <main>
-      <!-- Loads the specified .html file -->
-      <load src="./partials/vite-promo.html" />
-      <load src="./partials/badges.html" />
-    </main>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Search App</title>
+</head>
 
-    <load src="./partials/footer.html" />
+<body>
+  <main class="app">
+    <section class="search-section">
+      <h1 class="app-title">Image Search</h1>
 
-    <script type="module" src="./main.js"></script>
-  </body>
+      <form class="form" id="search-form">
+        <label class="form-label">
+          <input class="form-input" type="text" name="search-text" placeholder="Search images..." autocomplete="off"
+            required />
+        </label>
+        <button class="form-button" type="submit">Search</button>
+      </form>
+    </section>
+
+    <section class="gallery-section">
+      <ul class="gallery"></ul>
+    </section>
+
+    <button class="load-more load-more-hidden" id="load-more-btn">Load More</button>
+
+    <div class="loader loader-hidden" id="loader" aria-hidden="true"></div>
+  </main>
+
+  <script type="module" src="/main.js"></script>
+</body>
+
 </html>
